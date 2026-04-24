@@ -2,32 +2,11 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "assets/images"
-public_folder: "assets/images"
+# Simplified storage for your flat structure
+media_folder: "images"
+public_folder: "images"
 
 collections:
-  - name: "settings"
-    label: "Site Settings"
-    delete: false
-    editor:
-      preview: false
-    files:
-      - name: "navigation"
-        label: "Category Dropdown Management"
-        file: "navigation.json"
-        fields:
-          - label: "Menu Sections"
-            name: "sections"
-            widget: "list"
-            fields:
-              - { label: "Section Name", name: "name", widget: "string", hint: "e.g. Fashion, Audio, Sports" }
-              - label: "Links"
-                name: "links"
-                widget: "list"
-                fields:
-                  - { label: "Link Label", name: "label", widget: "string" }
-                  - { label: "URL / Anchor", name: "url", widget: "string", hint: "e.g. #earbuds or amazon.in/search..." }
-
   - name: "data"
     label: "Website Content"
     delete: false
@@ -43,8 +22,24 @@ collections:
             widget: "list"
             fields:
               - { label: "Title", name: "title", widget: "string" }
-              - { label: "Category ID", name: "category", widget: "string", hint: "e.g. earbuds, smartwatch (must match section IDs)" }
-              - { label: "Price Text", name: "price", widget: "string", hint: "e.g. ₹1,299" }
-              - { label: "Product Image", name: "image", widget: "image" }
-              - { label: "Amazon Affiliate Link", name: "amazon", widget: "string" }
+              - { label: "Category", name: "category", widget: "string", hint: "e.g. earbuds, smartwatch" }
+              - { label: "Price", name: "price", widget: "string" }
+              - { label: "Image", name: "image", widget: "image" }
+              - { label: "Amazon Link", name: "amazon", widget: "string" }
               - { label: "Description", name: "desc", widget: "text" }
+
+      - name: "navigation"
+        label: "Category Menu"
+        file: "navigation.json"
+        fields:
+          - label: "Sections"
+            name: "sections"
+            widget: "list"
+            fields:
+              - { label: "Section Name", name: "name", widget: "string" }
+              - label: "Links"
+                name: "links"
+                widget: "list"
+                fields:
+                  - { label: "Label", name: "label", widget: "string" }
+                  - { label: "URL", name: "url", widget: "string" }
