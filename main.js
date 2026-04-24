@@ -1,122 +1,80 @@
-/**
- * TechDeals India - Robust Single Page Logic
- */
-
 document.addEventListener('DOMContentLoaded', () => {
+    const mainContent = document.querySelector('main');
     const dropdownContent = document.getElementById('dynamic-dropdown-content');
-    const dropbtn = document.querySelector('.dropbtn');
-    const dropdown = document.querySelector('.dropdown');
 
-    // Comprehensive Fallback Data
-    const fallbackCategories = [
-        { name: "Audio", links: [{ label: "TWS Earbuds", url: "#earbuds" }, { label: "Neckbands", url: "#" }, { label: "Headphones", url: "#" }, { label: "Speakers", url: "#" }] },
-        { name: "Wearables", links: [{ label: "Smartwatches", url: "#smartwatch" }, { label: "Fitness Bands", url: "#" }, { label: "VR Headsets", url: "#" }] },
-        { name: "Fashion", links: [{ label: "Dresses", url: "#dresses" }, { label: "Men's Wear", url: "#" }, { label: "Shoes", url: "#" }, { label: "Watches", url: "#" }] },
-        { name: "Sports", links: [{ label: "Cricket Gear", url: "#sports" }, { label: "Gym Equipment", url: "#sports" }, { label: "Yoga Mats", url: "#sports" }, { label: "Cycling", url: "#" }] },
-        { name: "Computing", links: [{ label: "Laptops", url: "#" }, { label: "Monitors", url: "#" }, { label: "Tablets", url: "#" }, { label: "Printers", url: "#" }] },
-        { name: "Mobile Acc.", links: [{ label: "Power Banks", url: "#powerbank" }, { label: "Fast Chargers", url: "#" }, { label: "Cables", url: "#" }, { label: "Cases", url: "#" }] },
-        { name: "Home & Kitchen", links: [{ label: "Smart TVs", url: "#" }, { label: "Kitchen Appliances", url: "#" }, { label: "Security Cams", url: "#" }, { label: "Smart Bulbs", url: "#" }] },
-        { name: "Gaming", links: [{ label: "Consoles", url: "#" }, { label: "Gaming Mice", url: "#" }, { label: "PC Parts", url: "#" }] }
-    ];
+    // 1. Fetch and Render Navigation Dropdown
+    fetch('navigation.json')
+        .then(res => res.json())
+        .then(data => {
+            renderDropdown(data.sections);
+        })
+        .catch(err => console.error("Nav load failed:", err));
 
-    async function initCategories() {
-        try {
-            // Attempt to fetch fresh data
-            const response = await fetch(`navigation.json?cb=${Date.now()}`);
-            if (!response.ok) throw new Error("Fetch failed");
-            const data = await response.json();
-            
-            if (data && data.sections) {
-                renderDropdown(data.sections);
-            } else {
-                renderDropdown(fallbackCategories);
-            }
-        } catch (err) {
-            console.warn("Loading fallback categories:", err);
-            renderDropdown(fallbackCategories);
-        }
-    }
+    // 2. Fetch and Render Products
+    fetch('products.json')
+        .then(res => res.json())
+        .then(data => {
+            renderProducts(data.items);
+        })
+        .catch(err => {
+            console.error("Products load failed:", err);
+            mainContent.innerHTML = '<p style="text-align:center; padding: 50px;">No products found. Add some in the admin panel!</p>';
+        });
 
     function renderDropdown(sections) {
         if (!dropdownContent) return;
-        
-        const gridHtml = sections.map(sec => `
+        dropdownContent.innerHTML = sections.map(section => `
             <div class="dropdown-col">
-                <h4>${sec.name}</h4>
-                ${sec.links.map(link => `<a href="${link.url}">${link.label}</a>`).join('')}
+                <h4>${section.name}</h4>
+                ${section.links.map(link => `<a href="${link.url}">${link.label}</a>`).join('')}
             </div>
         `).join('');
-
-        dropdownContent.innerHTML = `<div class="dropdown-grid">${gridHtml}</div>`;
-        attachScrollListeners();
     }
 
-    function attachScrollListeners() {
-        const navLinks = document.querySelectorAll('.nav-links a, .logo, .dropdown-content a');
+    function renderProducts(items) {
+        if (!items || items.length === 0) return;
 
-        navLinks.forEach(link => {
-            link.onclick = (e) => {
-                const targetId = link.getAttribute('href');
-                if (targetId && targetId.startsWith('#') && targetId.length > 1) {
-                    e.preventDefault();
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 70,
-                            behavior: 'smooth'
-                        });
-                        // Close dropdown on mobile after click
-                        if (dropdown) dropdown.classList.remove('active');
-                    }
-                }
-            };
-        });
+        // Group products by category
+        const categories = [...new Set(items.map(item => item.category))];
+        
+        mainContent.innerHTML = categories.map(cat => {
+            const catItems = items.filter(i => i.category === cat);
+            const displayTitle = cat.charAt(0).toUpperCase() + cat.slice(1);
+            
+            return `
+                <section id="${cat}" style="padding: 60px 0;">
+                    <div class="container">
+                        <h2 style="text-align: center; margin-bottom: 40px;">Best ${displayTitle} Deals</h2>
+                        <div class="product-grid">
+                            ${catItems.map(item => `
+                                <div class="product-card">
+                                    <div class="product-image-wrap">
+                                        <img src="${item.image}" alt="${item.title}">
+                                    </div>
+                                    <div class="product-content">
+                                        <h3 class="product-title">${item.title}</h3>
+                                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">${item.desc}</p>
+                                        <div class="product-price">${item.price}</div>
+                                        <div class="cta-group" style="margin-top: 20px;">
+                                            <a href="${item.amazon}" target="_blank" class="btn btn-amazon">Buy on Amazon</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </section>
+            `;
+        }).join('');
     }
 
-    // Toggle dropdown on mobile click
-    if (dropbtn && dropdown) {
-        dropbtn.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768) {
-                e.preventDefault();
-                e.stopPropagation();
-                dropdown.classList.toggle('active');
-            }
-        });
-    }
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-        if (dropdown && !dropdown.contains(e.target)) {
-            dropdown.classList.remove('active');
-        }
-    });
-
-    initCategories();
-
-    // Scroll Observer for active states
-    const sections = document.querySelectorAll('section[id]');
-    window.onscroll = () => {
-        let current = '';
-        const scrollY = window.pageYOffset;
-
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop - 100;
-            const sectionHeight = section.offsetHeight;
-            if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-                current = section.getAttribute('id');
-            }
-        });
-
-        document.querySelectorAll('.nav-links a, .dropdown-content a').forEach(a => {
-            a.classList.toggle('active', a.getAttribute('href') === `#${current}`);
-        });
-
-        // Toggle header background on scroll
+    // Header Scroll Effect
+    window.addEventListener('scroll', () => {
         const header = document.querySelector('header');
         if (window.scrollY > 50) {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
         }
-    };
+    });
 });
