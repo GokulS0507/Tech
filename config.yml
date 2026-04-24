@@ -39,5 +39,5 @@ collections:
       - { label: "Price", name: "price", widget: "string" }
       - { label: "Image URL", name: "image", widget: "string" }
       - { label: "Amazon Link", name: "amazon", widget: "string" }
-      - { label: "Flipkart Link", name: "flipkart", widget: "string" }
+
       - { label: "Features", name: "features", widget: "list" }

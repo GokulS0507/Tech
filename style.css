@@ -398,14 +398,6 @@ main {
     background: #E68A00;
 }
 
-.btn-flipkart {
-    background: #2874F0;
-    color: white;
-}
-
-.btn-flipkart:hover {
-    background: #1254C0;
-}
 
 /* --- Footer --- */
 footer {
