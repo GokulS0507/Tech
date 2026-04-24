@@ -1,0 +1,74 @@
+{
+  "sections": [
+    {
+      "name": "Audio",
+      "links": [
+        { "label": "TWS Earbuds", "url": "#earbuds" },
+        { "label": "Neckbands", "url": "#" },
+        { "label": "Headphones", "url": "#" },
+        { "label": "Speakers", "url": "#" }
+      ]
+    },
+    {
+      "name": "Wearables",
+      "links": [
+        { "label": "Smartwatches", "url": "#smartwatch" },
+        { "label": "Fitness Bands", "url": "#" },
+        { "label": "VR Headsets", "url": "#" }
+      ]
+    },
+    {
+      "name": "Fashion",
+      "links": [
+        { "label": "Dresses", "url": "#dresses" },
+        { "label": "Men's Wear", "url": "#" },
+        { "label": "Shoes", "url": "#" },
+        { "label": "Watches", "url": "#" }
+      ]
+    },
+    {
+      "name": "Sports",
+      "links": [
+        { "label": "Cricket Gear", "url": "#sports" },
+        { "label": "Gym Equipment", "url": "#sports" },
+        { "label": "Yoga Mats", "url": "#sports" },
+        { "label": "Cycling", "url": "#" }
+      ]
+    },
+    {
+      "name": "Computing",
+      "links": [
+        { "label": "Laptops", "url": "#" },
+        { "label": "Monitors", "url": "#" },
+        { "label": "Tablets", "url": "#" },
+        { "label": "Printers", "url": "#" }
+      ]
+    },
+    {
+      "name": "Mobile Acc.",
+      "links": [
+        { "label": "Power Banks", "url": "#powerbank" },
+        { "label": "Fast Chargers", "url": "#" },
+        { "label": "Cables", "url": "#" },
+        { "label": "Cases", "url": "#" }
+      ]
+    },
+    {
+      "name": "Home & Kitchen",
+      "links": [
+        { "label": "Smart TVs", "url": "#" },
+        { "label": "Kitchen Appliances", "url": "#" },
+        { "label": "Security Cams", "url": "#" },
+        { "label": "Smart Bulbs", "url": "#" }
+      ]
+    },
+    {
+      "name": "Gaming",
+      "links": [
+        { "label": "Consoles", "url": "#" },
+        { "label": "Gaming Mice", "url": "#" },
+        { "label": "PC Parts", "url": "#" }
+      ]
+    }
+  ]
+}

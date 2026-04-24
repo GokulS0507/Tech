@@ -1,0 +1,43 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "/"
+public_folder: "/"
+
+collections:
+  - name: "settings"
+    label: "Site Settings"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - name: "navigation"
+        label: "Category Dropdown Management"
+        file: "navigation.json"
+        fields:
+          - label: "Menu Sections"
+            name: "sections"
+            widget: "list"
+            fields:
+              - { label: "Section Name", name: "name", widget: "string", hint: "e.g. Fashion, Audio, Sports" }
+              - label: "Links"
+                name: "links"
+                widget: "list"
+                fields:
+                  - { label: "Link Label", name: "label", widget: "string" }
+                  - { label: "URL / Anchor", name: "url", widget: "string", hint: "e.g. #earbuds or amazon.in/search..." }
+
+  - name: "products"
+    label: "Products"
+    folder: "/"
+    create: true
+    slug: "product-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Category", name: "category", widget: "string" }
+      - { label: "Price", name: "price", widget: "string" }
+      - { label: "Image URL", name: "image", widget: "string" }
+      - { label: "Amazon Link", name: "amazon", widget: "string" }
+      - { label: "Flipkart Link", name: "flipkart", widget: "string" }
+      - { label: "Features", name: "features", widget: "list" }
